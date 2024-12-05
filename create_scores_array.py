@@ -1,5 +1,7 @@
 import pandas as pd
 import argparse
+import shutil
+import os
 
 def generate_score_difference_array(input_df, min_rating, start_date, scaling_factor):
     """
@@ -28,6 +30,20 @@ def generate_score_difference_array(input_df, min_rating, start_date, scaling_fa
     score_diff_counts = df_filtered['score_difference'].value_counts()
     total_games = len(df_filtered)
     
+    # Print out all score difference frequencies sorted by score difference
+    print("Score Difference Frequencies:")
+    print("Score Difference | Count | Percentage | Scaled Count")
+    print("-" * 40)
+    
+    # Sort by score difference
+    for diff in sorted(score_diff_counts.index):
+        count = score_diff_counts[diff]
+        scaled_count = round(count / scaling_factor)
+        percentage = (count / total_games) * 100
+        print(f"{diff:14d} | {count:5d} | {percentage:6.2f}% | {scaled_count:5d}")
+    
+    print(f"\nTotal games (min rating {min_rating}): {total_games}")
+
     # Calculate the number of instances for each score difference in the Go array based on scaling factor
     score_diff_instances = {}
     for diff, count in score_diff_counts.items():
@@ -41,6 +57,8 @@ def generate_score_difference_array(input_df, min_rating, start_date, scaling_fa
         # Add instances to the result array
         result_array.extend([score_diff] * instances)
     
+    print(f"\n Final array length: {len(result_array)}")
+
     # Ensure the array is sorted
     result_array.sort()
     
@@ -48,22 +66,22 @@ def generate_score_difference_array(input_df, min_rating, start_date, scaling_fa
 
 def generate_go_array_literal(score_diff_array):
     """
-    Generate a Go array literal as a string from the score difference array.
+    Generate a Go file with a function that returns an array literal
+    from the score difference array.
     """
-    go_literal = "package standings\n\nvar ScoreDifferences = []int{\n"
+    go_literal = """package standings
+
+func GetScoreDifferences() []uint64 {
+    return []uint64{
+"""
     
     # Write array elements, 10 per line for readability
     for i, diff in enumerate(score_diff_array):
         # Add a comma and newline every 10 elements
-        line_end = ',\n' if (i+1) % 10 == 0 else ', '
-        
-        # Last element should not have a comma
-        if i == len(score_diff_array) - 1:
-            line_end = '\n'
-        
-        go_literal += f"{diff}{line_end}"
+        line_end = ',\n' if (i + 1) % 10 == 0 else ', '
+        go_literal += f" {diff}{line_end}"
     
-    go_literal += "}\n"
+    go_literal += "    }\n}\n"
     
     return go_literal
 
@@ -91,5 +109,7 @@ if __name__ == "__main__":
     go_array_literal = generate_go_array_literal(score_diff_array)
     
     # Write to the Go file
-    with open('score_differences.go', 'w') as f:
+    filename = 'score_differences.go'
+    with open(filename, 'w') as f:
         f.write(go_array_literal)
+    shutil.copy(filename, os.path.expandvars('$HOME/liwords/pkg/pair/standings/' + filename))
