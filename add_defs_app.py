@@ -49,7 +49,7 @@ def update_definitions(tsv_file, db_file, output_text):
 
         # Commit the changes
         conn.commit()
-        output_text.insert(tk.END, "Update successful. All words were updated with new definitions. You can now close the application.\n")
+        output_text.insert(tk.END, "Update successful. All words were updated with new definitions. You must restart Zyzzyva for the changes to take effects. You can now close the application.\n")
 
     except sqlite3.Error as e:
         output_text.insert(tk.END, f"SQLite error: {e}\n")
