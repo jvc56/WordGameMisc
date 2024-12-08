@@ -91,23 +91,27 @@ tsv_entry = tk.Entry(root, width=40)
 tsv_entry.grid(row=0, column=1, padx=10, pady=10)
 tsv_button = tk.Button(root, text="Browse", command=browse_tsv_file)
 tsv_button.grid(row=0, column=2, padx=10, pady=10)
+tsv_description = tk.Label(root, text="This should be a plain text file that contains each word with its definition delimited by a tab.", fg="gray")
+tsv_description.grid(row=1, column=0, columnspan=3, padx=10, pady=(0, 10), sticky="w")
 
 # Database file input
 db_label = tk.Label(root, text="Database File:")
-db_label.grid(row=1, column=0, padx=10, pady=10)
+db_label.grid(row=2, column=0, padx=10, pady=10)
 db_entry = tk.Entry(root, width=40)
-db_entry.grid(row=1, column=1, padx=10, pady=10)
+db_entry.grid(row=2, column=1, padx=10, pady=10)
 db_button = tk.Button(root, text="Browse", command=browse_db_file)
-db_button.grid(row=1, column=2, padx=10, pady=10)
+db_button.grid(row=2, column=2, padx=10, pady=10)
+db_description = tk.Label(root, text="This is the SQLite database file that contains the words and definitions for Zyzzyva.\nIt should look something like 'CSW24.db' and\ncan usually be found in C:\\Users\\<name>\\.collinszyzzyva\\lexicons for Collins Zyzzyva or C:\\Users\\<name>\\Zyzzyva\\lexicons for NASPA Zyzzyva.\nFor MacOS and Linux users it can be found in ~/.collinszyzzyva/lexicons for Collins Zyzzyva or ~/Zyzzyva/lexicons for NASPA Zyzzyva.", fg="gray")
+db_description.grid(row=3, column=0, columnspan=3, padx=10, pady=(0, 10), sticky="w")
 
 # Output text area
 output_label = tk.Label(root, text="Output:")
-output_label.grid(row=2, column=0, padx=10, pady=10)
+output_label.grid(row=4, column=0, padx=10, pady=10)
 output_text = tk.Text(root, height=15, width=60)
-output_text.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
+output_text.grid(row=5, column=0, columnspan=3, padx=10, pady=10)
 
 # Run button
 run_button = tk.Button(root, text="Update Definitions", command=run_update)
-run_button.grid(row=4, column=0, columnspan=3, padx=10, pady=10)
+run_button.grid(row=6, column=0, columnspan=3, padx=10, pady=10)
 
 root.mainloop()
