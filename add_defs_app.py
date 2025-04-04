@@ -62,9 +62,11 @@ def update_definitions(tsv_file, db_file, output_text):
             conn.close()
 
 def browse_tsv_file():
-    tsv_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt"), ("TSV Files", "*.tsv")])
+    file_path = filedialog.askopenfilename(
+        filetypes=[("Text Files", "*.txt"), ("TSV Files", "*.tsv"), ("All Files", "*.*")]
+    )
     tsv_entry.delete(0, tk.END)
-    tsv_entry.insert(0, tsv_path)
+    tsv_entry.insert(0, file_path)
 
 def browse_db_file():
     db_path = filedialog.askopenfilename(filetypes=[("SQLite DB Files", "*.db"), ("SQLite Files", "*.sqlite")])

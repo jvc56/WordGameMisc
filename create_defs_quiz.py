@@ -15,6 +15,9 @@ def create_word_defs_dict(filename):
     with open(filename, 'r') as file:
         for line in file:
             word_info = line.strip().split('\t')
+            if len(word_info) < 3:
+                print(f"Invalid line:\n{line}\n")
+                exit(1)
 
             front_hooks = ''
             if word_has_front_hooks(word_info):
