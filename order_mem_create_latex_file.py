@@ -1,7 +1,18 @@
+import sys
+import os
+
 def get_words():
-    words = []
-    with open('csw21_threes.txt') as f:
+    if len(sys.argv) < 2:
+        sys.exit("Fatal error: No filename provided. Usage: python script.py <filename>")
+
+    filename = sys.argv[1]
+
+    if not os.path.isfile(filename):
+        sys.exit(f"Fatal error: The file '{filename}' does not exist or cannot be accessed.")
+
+    with open(filename, 'r') as f:
         words = f.read().splitlines()
+
     return words
 
 if __name__ == '__main__':
